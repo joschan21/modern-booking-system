@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "cockroachdb"
+  url      = env("DATABASE_URL")
+}
+
+model MenuItem {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  name       String
+  price      Float
+  // description String
+  categories String[]
+  imageKey   String
+  active     Boolean  @default(true)
+}
+
+model Day {
+  id        String @id @default(cuid())
+  name      String // monday, tuesday, ...
+  dayOfWeek Int // @see getDay() documentation, 0 for Sunday, 1 for Monday, ...
+  openTime  String
+  closeTime String
+}
+
+model ClosedDay {
+  id   String   @id @default(cuid())
+  date DateTime @unique
+}
